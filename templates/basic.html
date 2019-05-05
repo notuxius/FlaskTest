@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic</title>
+</head>
+<body>
+    <h1>Welcome to the site</h1>
+    <h2>Pic:</h2>
+    <img alt="" src="../static/puppy_pic.jpg" height="300">
+    <br>
+    <a href="add_new_list">Add new list</a>
+    <br>
+    <a href="show_lists">Show lists</a>
+
+    <form method="POST">
+    {# This hidden_tag is a CSRF security feature. #}
+    {{ form.hidden_tag() }}
+{#    {{ form.name.label }} {{ form.name(class='some-css-class') }}#}
+    {{ form.listvalue.label }} {{ form.listvalue(class='some-css-class') }}
+    {{ form.submit() }}
+    </form>
+
+    {% if listvalues %}
+        <br>
+        Lists:
+        <ul>
+
+{#        {% for value in listvalues %}#}
+{#            {{ value.decode('utf-8') }}<br>#}
+{#        {% endfor %}#}
+            {{ listvalues['new_item'] }}
+
+        </ul>
+    {% endif %}
+
+
+</body>
+</html>
