@@ -5,8 +5,8 @@
     {# This hidden_tag is a CSRF security feature. #}
     {{ form.hidden_tag() }}
 {#    {{ form.name.label }} {{ form.name(class='some-css-class') }}#}
-    {{ form.add_list.label }} {{ form.add_list(class='some-css-class', autofocus=True) }}
-    {{ form.submit() }}
+    {{ form.add_list.label }} {{ form.add_list(class='form-control-plaintext', autofocus=True) }}
+    {{ form.submit(class='btn btn-primary mt-2') }}
     </form>
     <p>{{ status }}</p>
 

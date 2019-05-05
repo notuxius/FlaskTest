@@ -17,6 +17,7 @@ app.config['SECRET_KEY'] = 'mysecretkey'
 redis = Redis(app)
 redis.flushdb()
 
+
 # api = Api(app)
 #
 #
@@ -39,8 +40,6 @@ redis.flushdb()
 
 
 # Now create a WTForm Class
-# Lots of fields available:
-# http://wtforms.readthedocs.io/en/stable/fields.html
 class InfoForm(FlaskForm):
     '''
     This general class gets a lot of form about puppies.
@@ -52,7 +51,6 @@ class InfoForm(FlaskForm):
 
 @app.route('/')
 def index():
-
     # return render_template('base.html')
 
     # name = redis.get('name') or 'Hello'
@@ -80,10 +78,11 @@ def add_new_list():
         # redis.execute_command('JSON.SET', 'lists', '.', json.dumps(listdata))
         # listvalues = json.loads(redis.execute_command('JSON.GET', 'lists'))
 
-        if redis.lpush('lists', form.add_list.data):
+        try:
+            redis.lpush('lists', form.add_list.data)
             status = json.dumps({'status': 'ok'})
             # return redirect(url_for('add_new_list'))
-        else:
+        except Exception:
             status = json.dumps({'status': 'error'})
             # return redirect(url_for('add_new_list'), code=500)
 
@@ -93,18 +92,21 @@ def add_new_list():
 
 @app.route('/show_lists')
 def show_lists():
-    list_values = redis.lrange('lists', 0, -1)
-    list_string_values = []
-    for value in list_values:
-        # list_string_values.append([value.decode('utf-8')])
-        list_string_values.append(value.decode('utf-8'))
+    try:
+        lists = redis.lrange('lists', 0, -1)
+        lists_strings = []
+        for lst in lists:
+            # lists_strings.append([lst.decode('utf-8')])
+            lists_strings.append(lst.decode('utf-8'))
 
-    if list_string_values:
-        list_json_values = json.dumps({'lists': list_string_values})
-    else:
-        list_json_values = 'No lists to show'
+        if lists_strings:
+            lists_json = json.dumps({'lists': lists_strings})
+        else:
+            lists_json = 'No lists to show'
+    except Exception:
+        lists_json = 'Error communicating with DB'
 
-    return render_template('show_lists.html', list_json_values=list_json_values)
+    return render_template('show_lists.html', lists_json=lists_json)
 
 
 if __name__ == "main":
