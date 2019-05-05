@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <form id="ListsForm" method="POST" onsubmit="clearForm()">
+    {# This hidden_tag is a CSRF security feature. #}
+    {{ form.hidden_tag() }}
+{#    {{ form.name.label }} {{ form.name(class='some-css-class') }}#}
+    {{ form.add_list.label }} {{ form.add_list(class='some-css-class', autofocus=True) }}
+    {{ form.submit() }}
+    </form>
+    <p>{{ status }}</p>
+
+{#    <script>#}
+{#    function clearForm() {#}
+{#        newListString = document.getElementById('ListsForm')[1]#}
+{#        newListString.value = ''#}
+{#        console.log('cleared')#}
+{#    }#}
+{#    </script>#}
+{% endblock %}
